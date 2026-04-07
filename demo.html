@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>補習班營運管理系統 Demo — 仁格數位科技</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#f1f5f9;margin:0}
+    .tab-btn{padding:12px 20px;font-size:14px;font-weight:600;border:none;cursor:pointer;border-bottom:3px solid transparent;background:transparent;color:#64748b;transition:all .2s}
+    .tab-btn.active{color:#4f46e5;border-bottom-color:#4f46e5}
+    .card{background:white;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+    .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:600}
+    .badge-green{background:#dcfce7;color:#166534}.badge-yellow{background:#fef9c3;color:#854d0e}.badge-red{background:#fee2e2;color:#991b1b}.badge-blue{background:#dbeafe;color:#1e40af}.badge-purple{background:#f3e8ff;color:#7c3aed}
+    .btn-primary{background:#4f46e5;color:white;border:none;padding:10px 18px;border-radius:8px;cursor:pointer;font-weight:600;font-size:14px;transition:background .2s}
+    .btn-primary:hover{background:#4338ca}
+    .btn-ghost{background:white;color:#4f46e5;border:1px solid #4f46e5;padding:8px 14px;border-radius:8px;cursor:pointer;font-weight:600;font-size:13px}
+    .toast{position:fixed;bottom:24px;right:24px;background:#4f46e5;color:white;padding:12px 20px;border-radius:10px;font-size:14px;z-index:9999;box-shadow:0 4px 16px rgba(0,0,0,.15);display:none}
+    .stat-card{background:white;border-radius:12px;padding:18px 22px;box-shadow:0 1px 4px rgba(0,0,0,.06);display:flex;align-items:center;gap:16px}
+    .progress-bar{height:6px;background:#e2e8f0;border-radius:4px;overflow:hidden;margin-top:8px}
+    .progress-fill{height:100%;border-radius:4px}
+    table{width:100%;border-collapse:collapse}
+    th{text-align:left;font-size:12px;font-weight:700;color:#94a3b8;text-transform:uppercase;padding:10px 12px;background:#f8fafc;border-bottom:1px solid #e2e8f0}
+    td{padding:12px;font-size:14px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+    tr:hover td{background:#fafafe}
+    .sop-card{border:1px solid #e2e8f0;border-radius:10px;padding:16px;cursor:pointer;transition:all .2s}
+    .sop-card:hover{border-color:#4f46e5;box-shadow:0 2px 8px rgba(79,70,229,.1)}
+    .sop-card h4{font-size:14px;font-weight:700;margin:0 0 6px}
+    .sop-card p{font-size:12px;color:#64748b;margin:0;line-height:1.6}
+    .kpi-ring{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;flex-shrink:0}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;justify-content:center;align-items:center}
+    .modal-overlay.open{display:flex}
+    .modal{background:white;border-radius:16px;padding:28px;width:560px;max-width:94vw;max-height:85vh;overflow-y:auto;box-shadow:0 8px 32px rgba(0,0,0,.18)}
+    input,select,textarea{width:100%;border:1px solid #e2e8f0;border-radius:8px;padding:9px 12px;font-size:14px;outline:none;box-sizing:border-box}
+    input:focus,select:focus{border-color:#4f46e5}
+    label{font-size:13px;font-weight:600;color:#374151;display:block;margin-bottom:5px}
+    .step-list{counter-reset:step}
+    .step-item{counter-increment:step;display:flex;gap:12px;padding:12px 0;border-bottom:1px solid #f1f5f9}
+    .step-item::before{content:counter(step);background:#4f46e5;color:white;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+    .step-item:last-child{border-bottom:none}
+  </style>
+</head>
+<body>
+
+<div style="background:#eef2ff;border-bottom:1px solid #c7d2fe;padding:8px 16px;font-size:13px;color:#4338ca;display:flex;align-items:center;gap:6px;">
+  🧪 功能展示 Demo — 由 <a href="https://renstudio.tw" target="_blank" style="color:#4338ca;font-weight:700;">仁格數位科技</a> 製作｜模擬資料，展示核心功能
+</div>
+
+<div style="background:linear-gradient(135deg,#4f46e5 0%,#6366f1 100%);padding:18px 28px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+  <div>
+    <div style="color:rgba(255,255,255,.65);font-size:12px;margin-bottom:2px;">🏫 陽光補習班 · 營運管理後台</div>
+    <h1 style="color:white;font-size:20px;font-weight:700;margin:0;">內部營運管理系統</h1>
+  </div>
+  <div style="display:flex;gap:12px;">
+    <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 18px;color:white;text-align:center;">
+      <div style="font-size:24px;font-weight:700;">12</div>
+      <div style="font-size:11px;opacity:.75">SOP 文件</div>
+    </div>
+    <div style="background:rgba(255,255,255,.15);border-radius:10px;padding:10px 18px;color:white;text-align:center;">
+      <div style="font-size:24px;font-weight:700;color:#fde68a;">3</div>
+      <div style="font-size:11px;opacity:.75">待審核</div>
+    </div>
+  </div>
+</div>
+
+<div style="background:white;border-bottom:1px solid #e2e8f0;padding:0 24px;display:flex;gap:4px;overflow-x:auto;">
+  <button class="tab-btn active" onclick="switchTab('dashboard',this)">📊 總覽</button>
+  <button class="tab-btn" onclick="switchTab('sop',this)">📋 SOP 管理</button>
+  <button class="tab-btn" onclick="switchTab('kpi',this)">🎯 績效追蹤</button>
+  <button class="tab-btn" onclick="switchTab('docs',this)">📁 制度文件</button>
+</div>
+
+<div style="max-width:1100px;margin:0 auto;padding:24px 20px;">
+
+  <!-- 總覽 -->
+  <div id="tab-dashboard">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:20px;">
+      <div class="stat-card"><div style="font-size:32px;">📋</div><div><div style="font-size:26px;font-weight:700;color:#4f46e5;">12</div><div style="font-size:13px;color:#64748b;">SOP 文件數</div><div class="progress-bar"><div class="progress-fill" style="width:80%;background:#4f46e5;"></div></div></div></div>
+      <div class="stat-card"><div style="font-size:32px;">👥</div><div><div style="font-size:26px;font-weight:700;color:#4f46e5;">8</div><div style="font-size:13px;color:#64748b;">員工人數</div><div class="progress-bar"><div class="progress-fill" style="width:100%;background:#4f46e5;"></div></div></div></div>
+      <div class="stat-card"><div style="font-size:32px;">🎯</div><div><div style="font-size:26px;font-weight:700;color:#16a34a;">87%</div><div style="font-size:13px;color:#64748b;">本月 KPI 達成率</div><div class="progress-bar"><div class="progress-fill" style="width:87%;background:#16a34a;"></div></div></div></div>
+      <div class="stat-card"><div style="font-size:32px;">📈</div><div><div style="font-size:26px;font-weight:700;color:#d97706;">92%</div><div style="font-size:13px;color:#64748b;">制度覆蓋率</div><div class="progress-bar"><div class="progress-fill" style="width:92%;background:#d97706;"></div></div></div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:16px;">
+      <div class="card">
+        <h3 style="margin:0 0 14px;font-size:15px;font-weight:700;">📋 最近更新的 SOP</h3>
+        <table>
+          <thead><tr><th>文件名稱</th><th>部門</th><th>更新日期</th><th>狀態</th></tr></thead>
+          <tbody>
+            <tr><td><strong>新生報名接待流程</strong></td><td><span class="badge badge-blue">櫃檯</span></td><td>2025-06-10</td><td><span class="badge badge-green">已生效</span></td></tr>
+            <tr><td><strong>教師課堂管理規範</strong></td><td><span class="badge badge-purple">教師</span></td><td>2025-06-08</td><td><span class="badge badge-green">已生效</span></td></tr>
+            <tr><td><strong>學生出缺勤管理辦法</strong></td><td><span class="badge badge-yellow">營運</span></td><td>2025-06-05</td><td><span class="badge badge-yellow">審核中</span></td></tr>
+            <tr><td><strong>緊急事件處理流程</strong></td><td><span class="badge badge-yellow">營運</span></td><td>2025-06-01</td><td><span class="badge badge-green">已生效</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div class="card">
+          <h3 style="margin:0 0 12px;font-size:15px;font-weight:700;">📊 各部門 KPI 達成</h3>
+          <div style="display:flex;flex-direction:column;gap:10px;">
+            <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span>🖥️ 櫃檯</span><span style="font-weight:700;">91%</span></div><div class="progress-bar"><div class="progress-fill" style="width:91%;background:#4f46e5;"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span>⚙️ 營運</span><span style="font-weight:700;">85%</span></div><div class="progress-bar"><div class="progress-fill" style="width:85%;background:#6366f1;"></div></div></div>
+            <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span>📚 教師</span><span style="font-weight:700;">88%</span></div><div class="progress-bar"><div class="progress-fill" style="width:88%;background:#818cf8;"></div></div></div>
+          </div>
+        </div>
+        <div class="card">
+          <h3 style="margin:0 0 12px;font-size:15px;font-weight:700;">⚠️ 待處理事項</h3>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div style="padding:9px;background:#fef9c3;border-radius:8px;font-size:13px;"><strong>學生出缺勤 SOP</strong><br><span style="color:#78350f;">等待主管審核 · 3 天</span></div>
+            <div style="padding:9px;background:#fef9c3;border-radius:8px;font-size:13px;"><strong>6 月教師考核</strong><br><span style="color:#78350f;">尚有 2 位未填寫</span></div>
+            <div style="padding:9px;background:#fee2e2;border-radius:8px;font-size:13px;"><strong>消防演練 SOP</strong><br><span style="color:#991b1b;">逾期未更新 · 建議補建</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SOP 管理 -->
+  <div id="tab-sop" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <input type="text" placeholder="🔍 搜尋 SOP 文件名稱..." oninput="filterSOP(this.value)" style="max-width:320px;">
+      <div style="display:flex;gap:8px;">
+        <select onchange="filterSOPDept(this.value)" style="width:auto;padding:9px 12px;"><option value="">全部部門</option><option value="counter">櫃檯</option><option value="ops">營運</option><option value="teacher">教師</option></select>
+        <button class="btn-primary" onclick="showToast('✅ 已開啟新增 SOP 編輯器')">＋ 新增 SOP</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;" id="sop-grid">
+      <div class="sop-card" onclick="openSOP('新生報名接待流程')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-blue">櫃檯</span><span class="badge badge-green">已生效</span></div>
+        <h4>📝 新生報名接待流程</h4>
+        <p>從家長來電諮詢 → 預約參觀 → 現場接待 → 試聽安排 → 報名繳費的完整 SOP</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-06-10 ｜ 8 個步驟 ｜ 版本 v2.1</div>
+      </div>
+      <div class="sop-card" onclick="openSOP('教師課堂管理規範')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-purple">教師</span><span class="badge badge-green">已生效</span></div>
+        <h4>📚 教師課堂管理規範</h4>
+        <p>課前準備 → 點名 → 課堂進行 → 課後紀錄 → 家長聯絡的標準流程</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-06-08 ｜ 6 個步驟 ｜ 版本 v1.3</div>
+      </div>
+      <div class="sop-card" onclick="openSOP('學生出缺勤管理')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-yellow">營運</span><span class="badge badge-yellow">審核中</span></div>
+        <h4>📊 學生出缺勤管理辦法</h4>
+        <p>請假流程 → 缺勤通知 → 補課安排 → 連續缺勤處理 → 退費機制</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-06-05 ｜ 7 個步驟 ｜ 版本 v1.0</div>
+      </div>
+      <div class="sop-card" onclick="openSOP('緊急事件處理流程')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-yellow">營運</span><span class="badge badge-green">已生效</span></div>
+        <h4>🚨 緊急事件處理流程</h4>
+        <p>學生受傷 / 停電 / 地震 / 家長糾紛等突發狀況的標準應變流程</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-06-01 ｜ 5 個步驟 ｜ 版本 v1.2</div>
+      </div>
+      <div class="sop-card" onclick="openSOP('每日開班準備流程')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-blue">櫃檯</span><span class="badge badge-green">已生效</span></div>
+        <h4>🔑 每日開班準備流程</h4>
+        <p>開門 → 環境清潔 → 設備檢查 → 當日課表確認 → 系統登入的每日例行工作</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-05-28 ｜ 6 個步驟 ｜ 版本 v1.1</div>
+      </div>
+      <div class="sop-card" onclick="openSOP('收費與退費處理流程')">
+        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;"><span class="badge badge-blue">櫃檯</span><span class="badge badge-green">已生效</span></div>
+        <h4>💰 收費與退費處理流程</h4>
+        <p>學費計算 → 繳費方式 → 收據開立 → 退費申請 → 退款核准的完整流程</p>
+        <div style="margin-top:10px;font-size:12px;color:#94a3b8;">最後更新：2025-05-25 ｜ 5 個步驟 ｜ 版本 v1.0</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 績效追蹤 -->
+  <div id="tab-kpi" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+      <h3 style="margin:0;font-size:16px;font-weight:700;">🎯 2025 年 6 月 績效總覽</h3>
+      <select style="width:auto;padding:9px 12px;"><option>2025 年 6 月</option><option>2025 年 5 月</option><option>2025 年 4 月</option></select>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h4 style="font-size:14px;font-weight:700;color:#4f46e5;margin-bottom:12px;">🖥️ 櫃檯人員</h4>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table>
+          <thead><tr><th>姓名</th><th>接待轉換率</th><th>電話回覆及時率</th><th>家長滿意度</th><th>SOP 遵循</th><th>綜合</th></tr></thead>
+          <tbody>
+            <tr><td><strong>林小萱</strong></td><td><span style="color:#16a34a;font-weight:700;">92%</span></td><td>95%</td><td>4.8/5</td><td><span class="badge badge-green">達標</span></td>
+            <td><div class="kpi-ring" style="background:#dcfce7;color:#166534;width:42px;height:42px;font-size:14px;">A</div></td></tr>
+            <tr><td><strong>陳怡君</strong></td><td><span style="color:#d97706;font-weight:700;">78%</span></td><td>88%</td><td>4.5/5</td><td><span class="badge badge-yellow">待改善</span></td>
+            <td><div class="kpi-ring" style="background:#fef9c3;color:#854d0e;width:42px;height:42px;font-size:14px;">B</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div style="margin-bottom:20px;">
+      <h4 style="font-size:14px;font-weight:700;color:#6366f1;margin-bottom:12px;">📚 教師</h4>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table>
+          <thead><tr><th>姓名</th><th>課堂準時率</th><th>學生進步率</th><th>家長回饋</th><th>教案繳交</th><th>綜合</th></tr></thead>
+          <tbody>
+            <tr><td><strong>張明德 老師</strong></td><td>100%</td><td><span style="color:#16a34a;font-weight:700;">85%</span></td><td>4.9/5</td><td><span class="badge badge-green">準時</span></td>
+            <td><div class="kpi-ring" style="background:#dcfce7;color:#166534;width:42px;height:42px;font-size:14px;">A+</div></td></tr>
+            <tr><td><strong>李雅芳 老師</strong></td><td>96%</td><td><span style="color:#16a34a;font-weight:700;">80%</span></td><td>4.7/5</td><td><span class="badge badge-green">準時</span></td>
+            <td><div class="kpi-ring" style="background:#dcfce7;color:#166534;width:42px;height:42px;font-size:14px;">A</div></td></tr>
+            <tr><td><strong>王建宏 老師</strong></td><td>88%</td><td><span style="color:#d97706;font-weight:700;">68%</span></td><td>4.2/5</td><td><span class="badge badge-yellow">遲交 1 次</span></td>
+            <td><div class="kpi-ring" style="background:#fef9c3;color:#854d0e;width:42px;height:42px;font-size:14px;">B</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div>
+      <h4 style="font-size:14px;font-weight:700;color:#818cf8;margin-bottom:12px;">⚙️ 營運管理</h4>
+      <div class="card" style="padding:0;overflow:hidden;">
+        <table>
+          <thead><tr><th>姓名</th><th>排課準確率</th><th>問題處理時效</th><th>文件更新率</th><th>成本控制</th><th>綜合</th></tr></thead>
+          <tbody>
+            <tr><td><strong>黃志偉 主任</strong></td><td>98%</td><td><span style="color:#16a34a;font-weight:700;">平均 2hr</span></td><td>90%</td><td><span class="badge badge-green">達標</span></td>
+            <td><div class="kpi-ring" style="background:#dcfce7;color:#166534;width:42px;height:42px;font-size:14px;">A</div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- 制度文件 -->
+  <div id="tab-docs" style="display:none;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+      <h3 style="margin:0;font-size:16px;font-weight:700;">📁 制度文件庫</h3>
+      <button class="btn-primary" onclick="showToast('✅ 已開啟上傳介面')">＋ 上傳文件</button>
+    </div>
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table>
+        <thead><tr><th>文件名稱</th><th>分類</th><th>版本</th><th>更新日期</th><th>狀態</th><th>操作</th></tr></thead>
+        <tbody>
+          <tr><td><strong>📘 補習班營運手冊</strong></td><td><span class="badge badge-purple">綜合</span></td><td>v2.0</td><td>2025-06-10</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>📋 櫃檯作業 SOP 手冊</strong></td><td><span class="badge badge-blue">櫃檯</span></td><td>v1.4</td><td>2025-06-08</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>📊 績效考核辦法</strong></td><td><span class="badge badge-yellow">人事</span></td><td>v1.2</td><td>2025-06-05</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>📚 教師教學規範</strong></td><td><span class="badge badge-purple">教師</span></td><td>v1.1</td><td>2025-06-01</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>🛡️ 安全管理暨緊急應變計畫</strong></td><td><span class="badge badge-yellow">營運</span></td><td>v1.0</td><td>2025-05-20</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>💰 收退費管理辦法</strong></td><td><span class="badge badge-blue">櫃檯</span></td><td>v1.3</td><td>2025-05-15</td><td><span class="badge badge-green">已發布</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+          <tr><td><strong>📝 員工手冊（新人到職用）</strong></td><td><span class="badge badge-purple">人事</span></td><td>v2.1</td><td>2025-05-10</td><td><span class="badge badge-yellow">修訂中</span></td><td><button class="btn-ghost" style="font-size:12px;padding:5px 10px;" onclick="showToast('📄 已開啟預覽')">檢視</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div style="margin-top:16px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+      <div class="card" style="text-align:center;"><div style="font-size:28px;margin-bottom:6px;">📊</div><div style="font-size:24px;font-weight:800;color:#4f46e5;">92%</div><div style="font-size:13px;color:#64748b;">制度覆蓋率</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:28px;margin-bottom:6px;">📝</div><div style="font-size:24px;font-weight:800;color:#4f46e5;">7</div><div style="font-size:13px;color:#64748b;">已發布文件</div></div>
+      <div class="card" style="text-align:center;"><div style="font-size:28px;margin-bottom:6px;">🔄</div><div style="font-size:24px;font-weight:800;color:#d97706;">1</div><div style="font-size:13px;color:#64748b;">修訂中</div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- SOP Detail Modal -->
+<div class="modal-overlay" id="sop-modal">
+  <div class="modal">
+    <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:16px;">
+      <h3 style="margin:0;font-size:18px;font-weight:700;" id="sop-modal-title"></h3>
+      <button onclick="closeSopModal()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#94a3b8;">✕</button>
+    </div>
+    <div id="sop-modal-content"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:20px;">
+      <button class="btn-ghost" onclick="closeSopModal()">關閉</button>
+      <button class="btn-primary" onclick="showToast('✅ 已匯出 PDF');closeSopModal();">匯出 PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div style="text-align:center;padding:28px;background:white;border-top:1px solid #e2e8f0;margin-top:24px;">
+  <div style="font-size:14px;color:#64748b;margin-bottom:10px;">想讓補習班的制度真正數位化、可追蹤？</div>
+  <a href="https://renstudio.tw" target="_blank" style="display:inline-block;background:#4f46e5;color:white;padding:12px 28px;border-radius:8px;font-weight:700;text-decoration:none;font-size:15px;">聯絡仁格數位科技，開始評估 →</a>
+</div>
+
+<script>
+const sopData={
+  '新生報名接待流程':{dept:'櫃檯',steps:['家長來電或到班諮詢 → 記錄基本資訊（姓名、年級、需求科目）','安排試聽時段，發送確認訊息（LINE / 電話）','試聽當日：接待 → 介紹環境 → 安排座位 → 課後蒐集回饋','有意願者：填寫報名表 → 確認費用 → 選擇繳費方式','建檔：輸入學生資料至系統 → 分班 → 通知授課教師','寄發歡迎訊息、課表、注意事項給家長','首堂課後 3 日內，主動聯繫家長確認適應狀況','歸檔所有文件，標註轉換狀態（試聽→報名 / 未報名原因）']},
+  '教師課堂管理規範':{dept:'教師',steps:['課前 15 分鐘到班，確認教室設備與教材','上課鐘響後 3 分鐘內完成點名，缺席者通知櫃檯','依教案進行授課，確保互動環節不少於 20%','課堂結束前 5 分鐘進行重點複習與作業說明','課後 30 分鐘內完成課堂紀錄（進度、學生表現）','特殊狀況（學生情緒、學習落後）當日回報主管']},
+  '學生出缺勤管理':{dept:'營運',steps:['學生請假：家長透過 LINE / 電話通知 → 櫃檯記錄','當日未到且未請假：上課後 15 分鐘內致電家長確認','缺勤紀錄登入系統，自動計算出席率','連續缺席 2 堂：主管致電關懷','連續缺席 4 堂：安排面談，了解原因並提供補課方案','補課安排：協調教師空堂，通知家長時段選擇','每月匯出出缺勤報表，納入班級經營討論']},
+  '緊急事件處理流程':{dept:'營運',steps:['事件發生：現場人員立即確認狀況、確保安全','通報：5 分鐘內通知主管，必要時撥打 119/110','處置：依事件類型執行對應處理（急救/疏散/隔離）','通知家長：30 分鐘內聯繫相關學生家長','事後記錄：填寫事件報告表，檢討改善']},
+  '每日開班準備流程':{dept:'櫃檯',steps:['開門、開燈、開冷氣/暖氣','環境清潔：教室、櫃檯、洗手間巡檢','設備測試：投影機、電腦、印表機開機確認','確認今日課表、代課資訊、特殊事項','系統登入，查看今日預約、待繳費、待聯繫事項','準備簽到表、教材，放置各教室']},
+  '收費與退費處理流程':{dept:'櫃檯',steps:['報名繳費：確認費用 → 收款（現金/轉帳/刷卡） → 開立收據','退費申請：家長填寫退費單 → 確認上課堂數 → 計算退費金額','退費核准：主管簽核 → 財務處理 → 通知家長領取/匯款','收據與退費紀錄歸檔，每月核對帳務','逾期未繳：提醒 → 7 天後再提醒 → 14 天後通報主管']}
+};
+function switchTab(name,btn){
+  ['dashboard','sop','kpi','docs'].forEach(t=>{document.getElementById('tab-'+t).style.display=t===name?'block':'none';});
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>{t.style.display='none';},3000);}
+function openSOP(name){
+  const d=sopData[name];if(!d)return;
+  document.getElementById('sop-modal-title').textContent=name;
+  document.getElementById('sop-modal-content').innerHTML=`<div style="margin-bottom:12px;"><span class="badge badge-blue">${d.dept}</span></div><div class="step-list">${d.steps.map(s=>`<div class="step-item"><div style="font-size:14px;color:#374151;">${s}</div></div>`).join('')}</div>`;
+  document.getElementById('sop-modal').classList.add('open');
+}
+function closeSopModal(){document.getElementById('sop-modal').classList.remove('open');}
+function filterSOP(q){/* simplified for demo */}
+function filterSOPDept(v){/* simplified for demo */}
+</script>
+</body>
+</html>

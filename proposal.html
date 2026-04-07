@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>補習班營運管理系統 提案報價單 — 仁格數位科技</title>
+  <style>
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:#f8fafc;color:#1e293b;font-size:15px;line-height:1.7}
+    .page{max-width:860px;margin:0 auto;background:white;box-shadow:0 0 40px rgba(0,0,0,.08)}
+
+    .header{background:linear-gradient(135deg,#4f46e5,#6366f1);padding:44px 52px}
+    .header-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+    .company-name{color:white;font-size:20px;font-weight:800}
+    .company-sub{color:rgba(255,255,255,.6);font-size:13px;margin-top:3px}
+    .doc-info{text-align:right;color:rgba(255,255,255,.65);font-size:13px;line-height:2}
+    .doc-title{color:white;font-size:32px;font-weight:800;line-height:1.2}
+    .doc-subtitle{color:rgba(255,255,255,.75);font-size:15px;margin-top:10px}
+
+    .section{padding:38px 52px;border-bottom:1px solid #f1f5f9}
+    .section-title{font-size:12px;font-weight:800;color:#4f46e5;text-transform:uppercase;letter-spacing:2px;margin-bottom:20px;display:flex;align-items:center;gap:10px}
+    .section-title::after{content:'';flex:1;height:1px;background:#e2e8f0}
+
+    .pain-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .pain-item{background:#fef2f2;border-left:3px solid #f87171;border-radius:0 8px 8px 0;padding:13px 16px}
+    .pain-item strong{display:block;color:#dc2626;font-size:13px;margin-bottom:3px;font-weight:700}
+    .pain-item span{font-size:13px;color:#374151}
+
+    .solution-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .sol-item{display:flex;gap:12px;align-items:flex-start;padding:16px;background:#eef2ff;border-radius:10px}
+    .sol-icon{font-size:24px;flex-shrink:0}
+    .sol-title{font-weight:700;font-size:14px;margin-bottom:3px;color:#312e81}
+    .sol-desc{font-size:13px;color:#374151;line-height:1.6}
+
+    .highlight-box{background:linear-gradient(135deg,#eef2ff,#e0e7ff);border:2px solid #818cf8;border-radius:12px;padding:20px 24px;margin-bottom:20px}
+    .highlight-box-title{font-weight:800;font-size:15px;color:#312e81;margin-bottom:8px}
+    .highlight-box-text{font-size:14px;color:#374151;line-height:1.8}
+
+    .compare-table{width:100%;border-collapse:collapse;margin-top:4px}
+    .compare-table th{padding:12px 16px;font-size:12px;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid #e2e8f0;text-align:left;background:#f8fafc}
+    .compare-table td{padding:14px 16px;font-size:14px;border-bottom:1px solid #f1f5f9;vertical-align:top;line-height:1.6}
+    .compare-table tr.highlight td{background:#eef2ff}
+    .compare-table tr.highlight td:first-child{border-left:3px solid #4f46e5}
+    .col-limit{color:#dc2626;font-size:13px}
+    .tag{display:inline-block;padding:2px 9px;border-radius:12px;font-size:12px;font-weight:700}
+    .tag-rec{background:#4f46e5;color:white}
+    .tag-orange{background:#ffedd5;color:#c2410c}
+
+    .quote-table{width:100%;border-collapse:collapse}
+    .quote-table th{background:#4f46e5;color:white;font-size:13px;font-weight:700;padding:12px 18px;text-align:left}
+    .quote-table td{padding:13px 18px;font-size:14px;border-bottom:1px solid #f1f5f9}
+    .quote-table tr:hover td{background:#fafafe}
+    .price{font-weight:700;color:#4f46e5;white-space:nowrap;text-align:right}
+    .quote-table .total-row td{background:#4f46e5;color:white;font-size:17px;font-weight:800;padding:15px 18px}
+
+    .own-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .own-item{display:flex;gap:12px;align-items:flex-start;padding:14px;background:#eef2ff;border-radius:10px}
+    .own-icon{font-size:22px;flex-shrink:0}
+    .own-title{font-weight:700;font-size:14px;margin-bottom:2px}
+    .own-desc{font-size:13px;color:#374151}
+
+    .timeline{display:flex;gap:0}
+    .tl-item{flex:1;text-align:center;position:relative}
+    .tl-item::before{content:'';position:absolute;top:17px;left:50%;right:-50%;height:2px;background:#e2e8f0;z-index:0}
+    .tl-item:last-child::before{display:none}
+    .tl-dot{width:34px;height:34px;border-radius:50%;background:#4f46e5;color:white;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 8px;position:relative;z-index:1}
+    .tl-label{font-size:12px;font-weight:700}
+    .tl-sub{font-size:11px;color:#64748b;margin-top:2px}
+
+    .faq-item{border:1px solid #e2e8f0;border-radius:10px;padding:16px 20px;margin-bottom:10px}
+    .faq-q{font-weight:700;font-size:14px;color:#1e293b;margin-bottom:6px}
+    .faq-a{font-size:13px;color:#475569;line-height:1.7}
+
+    .why-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+    .why-card{text-align:center;padding:20px 14px;background:#f8fafc;border-radius:10px}
+    .why-icon{font-size:28px;margin-bottom:8px}
+    .why-title{font-weight:700;font-size:14px;margin-bottom:6px}
+    .why-desc{font-size:13px;color:#64748b;line-height:1.6}
+
+    .cta{background:linear-gradient(135deg,#4f46e5,#6366f1);padding:44px 52px;text-align:center}
+    .cta h2{color:white;font-size:24px;font-weight:800;margin-bottom:10px}
+    .cta p{color:rgba(255,255,255,.8);font-size:14px;margin-bottom:24px;line-height:1.8}
+    .cta-btn{display:inline-block;background:white;color:#4f46e5;font-weight:800;font-size:15px;padding:14px 36px;border-radius:8px;text-decoration:none;margin:0 6px 10px}
+    .info-row{display:flex;justify-content:center;gap:28px;margin-top:16px;flex-wrap:wrap}
+    .info-item{color:rgba(255,255,255,.75);font-size:13px}
+
+    @media(max-width:620px){
+      .section{padding:24px 20px}.header{padding:28px 20px}.cta{padding:28px 20px}
+      .pain-grid,.solution-grid,.own-grid,.why-grid{grid-template-columns:1fr}
+      .timeline{flex-direction:column;gap:10px}.tl-item::before{display:none}
+      .header-top{flex-direction:column;gap:12px}.doc-info{text-align:left}
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-top">
+      <div>
+        <div class="company-name">仁格數位科技有限公司</div>
+        <div class="company-sub">renstudio.tw · ren.studio.dev@gmail.com</div>
+      </div>
+      <div class="doc-info">
+        <div>文件編號：RS-2025-EDU-01</div>
+        <div>提案日期：2025 年 7 月</div>
+        <div>有效期限：30 天</div>
+      </div>
+    </div>
+    <div class="doc-title">讓補習班的制度<br>從口頭傳承變成系統運作</div>
+    <div class="doc-subtitle">SOP 數位化 · 績效追蹤 · 制度文件管理 · 落地導入｜專為補教業設計</div>
+  </div>
+
+  <!-- 痛點 -->
+  <div class="section">
+    <div class="section-title">📍 這些狀況是不是很熟悉</div>
+    <p style="font-size:14px;color:#64748b;margin-bottom:18px;">補習班的規模不大，但要管的事情不少。很多流程都在老闆或資深員工的腦袋裡，只要人一換、一忙，品質就不穩定。</p>
+    <div class="pain-grid">
+      <div class="pain-item"><strong>流程靠口頭教，每個人做法不同</strong><span>新人來了跟著學，但每個人教的不一樣，同樣的事三個人三種做法。</span></div>
+      <div class="pain-item"><strong>績效沒標準，考核全憑感覺</strong><span>老師教得好不好、櫃檯接待品質如何，沒有數據，只能靠印象評分。</span></div>
+      <div class="pain-item"><strong>制度文件東一份西一份</strong><span>有的在 Word、有的在紙上、有的根本沒寫下來，要找的時候找不到。</span></div>
+      <div class="pain-item"><strong>人一離職，經驗就帶走了</strong><span>好不容易培養的默契和做法，隨著人員異動又要從頭來過。</span></div>
+    </div>
+  </div>
+
+  <!-- 核心觀點 -->
+  <div class="section">
+    <div class="section-title">💡 制度要落地，關鍵在工具</div>
+    <div class="highlight-box">
+      <div class="highlight-box-title">📌 SOP 寫在 Word 裡，和 SOP 活在系統裡，是兩件事</div>
+      <div class="highlight-box-text">很多補習班不是沒有制度，而是制度沒有辦法被追蹤、被執行、被更新。一份放在資料夾裡的 Word 文件，半年後沒有人記得它的存在。<br><br>我們的做法是：<strong>把制度變成一套可操作的系統</strong>——SOP 有版本控管、績效有數據追蹤、文件有統一入口，新人上線就知道該怎麼做，主管打開後台就知道哪裡需要改善。</div>
+    </div>
+  </div>
+
+  <!-- 方案比較 -->
+  <div class="section">
+    <div class="section-title">🔍 不同做法的比較</div>
+    <table class="compare-table">
+      <thead><tr><th style="width:20%;">做法</th><th>能做到什麼</th><th>做不到什麼</th><th style="width:16%;">成本</th></tr></thead>
+      <tbody>
+        <tr>
+          <td style="font-weight:600;">找顧問寫文件<span class="tag tag-orange" style="display:block;margin-top:4px;font-size:11px;">傳統型</span></td>
+          <td style="font-size:13px;">產出 SOP 文件、考核表、制度手冊</td>
+          <td class="col-limit">文件交付後缺乏追蹤機制，無法確認是否被執行，更新維護困難</td>
+          <td style="font-size:13px;font-weight:700;">NT$ 50,000+<br><span style="color:#64748b;font-weight:400;font-size:12px;">顧問費＋文件費</span></td>
+        </tr>
+        <tr>
+          <td style="font-weight:600;">自己用 Google Docs<span class="tag tag-orange" style="display:block;margin-top:4px;font-size:11px;">陽春型</span></td>
+          <td style="font-size:13px;">免費、可共編、隨時改</td>
+          <td class="col-limit">沒有版本控管、沒有追蹤機制、文件散落各處、找不到最新版</td>
+          <td style="font-size:13px;font-weight:700;color:#16a34a;">免費<br><span style="color:#64748b;font-weight:400;font-size:12px;">但管理成本高</span></td>
+        </tr>
+        <tr class="highlight">
+          <td style="font-weight:600;"><strong>制度管理系統</strong><span class="tag tag-rec" style="display:block;margin-top:4px;font-size:11px;">✦ 我們的建議</span></td>
+          <td style="font-size:13px;color:#312e81;font-weight:600;">SOP 可查詢、可追蹤、有版本紀錄；績效有數據依據；制度文件統一管理；新人開帳號就能上手</td>
+          <td style="font-size:13px;color:#64748b;">需要前期開發時間</td>
+          <td style="font-size:13px;font-weight:700;color:#4f46e5;">NT$ 60,000<br><span style="color:#4f46e5;font-size:12px;">一次付清</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 系統功能 -->
+  <div class="section">
+    <div class="section-title">🎁 系統完成後，您擁有的</div>
+    <div class="own-grid">
+      <div class="own-item"><div class="own-icon">📋</div><div><div class="own-title">SOP 管理模組</div><div class="own-desc">依部門分類，每份 SOP 有步驟、版本紀錄、生效狀態，隨時可查可改</div></div></div>
+      <div class="own-item"><div class="own-icon">🎯</div><div><div class="own-title">績效追蹤模組</div><div class="own-desc">櫃檯、營運、教師各有對應 KPI，每月自動彙整，不再憑感覺打分</div></div></div>
+      <div class="own-item"><div class="own-icon">📁</div><div><div class="own-title">制度文件庫</div><div class="own-desc">所有制度文件統一入口，分類清楚、版本明確，告別 Word 散落各處</div></div></div>
+      <div class="own-item"><div class="own-icon">📊</div><div><div class="own-title">管理儀表板</div><div class="own-desc">一眼看到 SOP 覆蓋率、KPI 達成率、待處理事項，掌握全局</div></div></div>
+      <div class="own-item"><div class="own-icon">👤</div><div><div class="own-title">角色權限管理</div><div class="own-desc">主管、櫃檯、教師各有對應權限，看到該看的、做該做的</div></div></div>
+      <div class="own-item"><div class="own-icon">🚀</div><div><div class="own-title">可持續擴充</div><div class="own-desc">未來想加排課管理、家長通知、學費系統？都能在此基礎上延伸</div></div></div>
+    </div>
+  </div>
+
+  <!-- 報價 -->
+  <div class="section">
+    <div class="section-title">💰 報價明細</div>
+    <table class="quote-table">
+      <thead><tr><th style="width:35%;">開發項目</th><th>說明</th><th style="width:16%;text-align:right;">費用</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SOP 管理模組</strong></td><td>SOP 建立、步驟編輯、版本控管、部門分類、狀態追蹤（草稿/審核/生效）</td><td class="price">NT$ 18,000</td></tr>
+        <tr><td><strong>績效追蹤模組</strong></td><td>三種角色 KPI 設定、月度評分、數據圖表、歷史紀錄</td><td class="price">NT$ 16,000</td></tr>
+        <tr><td><strong>制度文件庫</strong></td><td>文件上傳、分類管理、版本紀錄、全文搜尋</td><td class="price">NT$ 10,000</td></tr>
+        <tr><td><strong>管理後台 + 儀表板</strong></td><td>總覽數據、待辦事項、角色權限管理</td><td class="price">NT$ 10,000</td></tr>
+        <tr><td><strong>部署上線 + 教育訓練</strong></td><td>雲端部署、操作手冊、1 次視訊教學（含錄影）</td><td class="price">NT$ 6,000</td></tr>
+        <tr class="total-row"><td colspan="2" style="text-align:right;">專案總計（一次性，無月費）</td><td style="text-align:right;color:white;">NT$ 60,000</td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:#64748b;margin-top:14px;">付款方式：簽約時付 50%（NT$ 30,000），系統完成驗收後付尾款 50%（NT$ 30,000）。</p>
+  </div>
+
+  <!-- 時程 -->
+  <div class="section">
+    <div class="section-title">📅 開發時程（約 5 週）</div>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot">1</div><div class="tl-label">需求訪談</div><div class="tl-sub">Week 1</div></div>
+      <div class="tl-item"><div class="tl-dot">2</div><div class="tl-label">SOP + 文件模組</div><div class="tl-sub">Week 1-2</div></div>
+      <div class="tl-item"><div class="tl-dot">3</div><div class="tl-label">績效 + 後台</div><div class="tl-sub">Week 2-3</div></div>
+      <div class="tl-item"><div class="tl-dot">4</div><div class="tl-label">測試 + 修正</div><div class="tl-sub">Week 4</div></div>
+      <div class="tl-item"><div class="tl-dot" style="background:#22c55e;">✓</div><div class="tl-label">上線交付</div><div class="tl-sub">Week 5</div></div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="section">
+    <div class="section-title">❓ 常見問題</div>
+    <div class="faq-item">
+      <div class="faq-q">Q：我們目前完全沒有 SOP 文件，可以做嗎？</div>
+      <div class="faq-a">A：可以。系統建好後，我們會協助您把現有的工作流程梳理成第一批 SOP 放進系統。後續新增或修改，您的團隊自己就能操作。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：KPI 指標可以自己調整嗎？</div>
+      <div class="faq-a">A：可以。每個角色的考核項目、權重、評分標準都可以在後台自行設定，不需要找工程師修改。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Q：系統交付後如果需要改功能怎麼辦？</div>
+      <div class="faq-a">A：交付後提供 1 個月免費維護（bug 修正）。後續新增功能依項目另報，程式碼完全屬於您，也可以交給任何工程師維護。</div>
+    </div>
+  </div>
+
+  <!-- 為什麼選仁格 -->
+  <div class="section">
+    <div class="section-title">🏆 為什麼選擇仁格數位科技</div>
+    <div class="why-grid">
+      <div class="why-card"><div class="why-icon">🎯</div><div class="why-title">從需求出發</div><div class="why-desc">先了解您的實際流程，再設計系統，確保做出來的東西真的能用</div></div>
+      <div class="why-card"><div class="why-icon">💬</div><div class="why-title">過程透明</div><div class="why-desc">報價清楚列明、開發過程定期同步，有變更當下討論</div></div>
+      <div class="why-card"><div class="why-icon">🔧</div><div class="why-title">交付後持續支援</div><div class="why-desc">1 個月免費維護，後續有問題隨時聯繫</div></div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta">
+    <h2>下一步，從一次需求訪談開始</h2>
+    <p>我們提供 30 分鐘的免費需求評估，<br>針對您的補習班現況，給出具體的制度數位化建議。</p>
+    <a href="mailto:ren.studio.dev@gmail.com" class="cta-btn">📧 預約需求訪談</a>
+    <div class="info-row">
+      <span class="info-item">🌐 renstudio.tw</span>
+      <span class="info-item">📧 ren.studio.dev@gmail.com</span>
+      <span class="info-item">⏱ 工作日 24 小時內回覆</span>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
