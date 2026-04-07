@@ -294,5 +294,10 @@ function closeSopModal(){document.getElementById('sop-modal').classList.remove('
 function filterSOP(q){/* simplified for demo */}
 function filterSOPDept(v){/* simplified for demo */}
 </script>
+<script>
+(function(){if(sessionStorage.getItem('_t'))return;sessionStorage.setItem('_t','1');
+fetch('https://renstudio-tracker.ren-studio-dev.workers.dev',{method:'POST',headers:{'Content-Type':'application/json'},
+body:JSON.stringify({project:'補習班管理系統',page:'Demo 功能展示'})}).catch(function(){});})();
+</script>
 </body>
 </html>
