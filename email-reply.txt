@@ -1,0 +1,16 @@
+您好！
+
+您提到的問題——流程靠口頭傳承、考核沒有標準、制度文件散落各處——這些其實有一個共同的根本原因：缺少一套讓制度「被看到、被追蹤、被執行」的工具。
+
+我們是仁格數位科技（renstudio.tw），專門為不同產業打造量身訂製的數位工具。針對補習班的營運管理，我們的做法是：把 SOP、績效考核、制度文件全部整進一套系統裡，讓每個人打開後台就知道該怎麼做，主管隨時掌握執行狀況。
+
+這是我們做的功能展示和完整提案，您可以直接體驗：
+
+👉 系統 Demo：https://renstudiodev-tw.github.io/tutoring-ops-system/demo.html
+👉 提案與報價：https://renstudiodev-tw.github.io/tutoring-ops-system/proposal.html
+
+想先確認一件事：您目前的補習班大約多少員工？有幾個主要角色（櫃檯、教師、營運）？這會影響系統的權限設計和 KPI 規劃。
+
+仁格數位科技
+🌐 renstudio.tw
+📧 ren.studio.dev@gmail.com
